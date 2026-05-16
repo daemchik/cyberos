@@ -5,11 +5,6 @@
       "entrypoint": "frontend",
       "framework": "vite",
       "routePrefix": "/"
-    },
-    "backend": {
-      "entrypoint": "backend",
-      "framework": "django",
-      "routePrefix": "/_/backend"
     }
   }
 }
