@@ -1,0 +1,42 @@
+# MySQL + Django API. Фронт: соберите `cyberos` (`npm run build`) и отдайте статику через nginx/traefik.
+# HTTPS: терминируйте TLS на reverse-proxy (Caddy / nginx + Let's Encrypt).
+# Бэкап БД: см. `deploy/backup-db.sh`
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: cyberos
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-cyberos_root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: cyberos
+      DB_USER: root
+      DB_PASSWORD: ${MYSQL_ROOT_PASSWORD:-cyberos_root}
+      DJANGO_DEBUG: "false"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,api
+      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://localhost:8080
+      AGENT_SHARED_SECRET: ${AGENT_SHARED_SECRET:-dev-agent-secret}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

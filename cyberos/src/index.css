@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --accent: #00FF00;
+  --font-mono: 'JetBrains Mono', monospace;
+  --app-bg: #0a0a0b;
+  --app-fg: #e4e4e7;
+  --sidebar-bg: #0a0a0b;
+  --header-bg: rgba(0, 0, 0, 0.35);
+  --app-border: #2a2a2c;
+  --panel-bg: #0a0a0b;
+  --panel-muted: #18181b;
+  --input-bg: #09090b;
+  --text-heading: #fafafa;
+  --text-primary: #e4e4e7;
+  --text-secondary: #a1a1aa;
+  --chart-grid: #2a2a2c;
+  --chart-tick: #71717a;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --app-bg: #f4f4f5;
+  --app-fg: #18181b;
+  --sidebar-bg: #fafafa;
+  --header-bg: rgba(255, 255, 255, 0.92);
+  --app-border: #d4d4d8;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --app-bg: #0a0a0b;
+  --app-fg: #e4e4e7;
+  --sidebar-bg: #0a0a0b;
+  --header-bg: rgba(0, 0, 0, 0.35);
+  --app-border: #2a2a2c;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-mono), monospace;
+  background-color: var(--app-bg);
+  color: var(--app-fg);
+}
+
+/* Override accent color globally */
+.accent-text { color: var(--accent) !important; }
+.accent-bg { background-color: var(--accent) !important; }
+.accent-border { border-color: var(--accent) !important; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
